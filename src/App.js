@@ -105,7 +105,8 @@ function App() {
           Test vanilla js
         </button>
         <div>
-          {vanillaJsBenchmark && `Canvas benchmark: ${vanillaJsBenchmark}ms`}
+          {vanillaJsBenchmark &&
+            `Vanilla js benchmark: ${vanillaJsBenchmark}ms`}
         </div>
       </div>
 
