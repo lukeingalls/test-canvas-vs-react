@@ -1,1 +1,1 @@
-export const TEST_SIZE = 1000;
+export const TEST_SIZE = 10000;

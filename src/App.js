@@ -3,12 +3,15 @@ import "./App.css";
 import ReactRenderedRectangle from "./ReactRenderedRectangle";
 import CanvasRenderedRectangle from "./CanvasRenderedRectangle";
 import { TEST_SIZE } from "./constants";
+import VanillaJs from "./VanillaJsRenderedRectangle";
 
 function App() {
-  const [testRect, setTestRect] = useState(false);
+  const [testReact, setTestReact] = useState(false);
   const [reactBenchmark, setReactBenchmark] = useState(0);
-  const [canvasBenchmark, setCanvasBenchmark] = useState(0);
   const [testCanvas, setTestCanvas] = useState(false);
+  const [canvasBenchmark, setCanvasBenchmark] = useState(0);
+  const [testVanillaJs, setTestVanillaJs] = useState(false);
+  const [vanillaJsBenchmark, setVanillaJsBenchmark] = useState(0);
 
   const testStart = useRef();
 
@@ -35,9 +38,16 @@ function App() {
       }
       return false;
     });
-    setTestRect((prev) => {
+    setTestReact((prev) => {
       if (prev) {
         setReactBenchmark(performance.now() - testStart.current);
+      }
+
+      return false;
+    });
+    setTestVanillaJs((prev) => {
+      if (prev) {
+        setVanillaJsBenchmark(performance.now() - testStart.current);
       }
 
       return false;
@@ -53,19 +63,28 @@ function App() {
         position: "relative",
       }}
     >
-      <div>
+      <div>Test size {TEST_SIZE}</div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "100px auto",
+          gap: 10,
+          justifyItems: "start",
+        }}
+      >
         <button
           type="button"
+          style={{ gridColumn: 1 }}
           onClick={() => {
-            setTestRect(true);
+            setTestReact(true);
             testStart.current = performance.now();
           }}
         >
           Test react
         </button>
-        {reactBenchmark && `React benchmark: ${reactBenchmark}ms`}
-      </div>
-      <div>
+        <div style={{ gridColumn: 2 }}>
+          {reactBenchmark && `React benchmark: ${reactBenchmark}ms`}
+        </div>
         <button
           type="button"
           onClick={() => {
@@ -75,10 +94,24 @@ function App() {
         >
           Test canvas
         </button>
-        {canvasBenchmark && `Canvas benchmark: ${canvasBenchmark}ms`}
+        <div>{canvasBenchmark && `Canvas benchmark: ${canvasBenchmark}ms`}</div>
+        <button
+          type="button"
+          onClick={() => {
+            setTestVanillaJs(true);
+            testStart.current = performance.now();
+          }}
+        >
+          Test vanilla js
+        </button>
+        <div>
+          {vanillaJsBenchmark && `Canvas benchmark: ${vanillaJsBenchmark}ms`}
+        </div>
       </div>
+
       {testCanvas && <CanvasRenderedRectangle rects={rects} done={done} />}
-      {testRect && <ReactRenderedRectangle rects={rects} done={done} />}
+      {testReact && <ReactRenderedRectangle rects={rects} done={done} />}
+      {testVanillaJs && <VanillaJs rects={rects} done={done} />}
     </div>
   );
 }
